@@ -1,7 +1,7 @@
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { mdsx } from 'mdsx';
 import mdsxConfig from './mdsx.config.js';
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-node';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -11,11 +11,7 @@ const config = {
 			'$content/*': '.velite/*'
 		},
 		adapter: adapter({
-			pages: 'build',
-			assets: 'build',
-			fallback: '404.html',
-			precompress: true,
-			strict: true
+			out: 'build'
 		}),
 		prerender: {
 			handleMissingId: 'ignore'
