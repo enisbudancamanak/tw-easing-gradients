@@ -2,9 +2,9 @@ import { defineSiteConfig } from '@svecodocs/kit';
 
 export const siteConfig = defineSiteConfig({
 	name: 'tw-easing-gradients',
-	url: 'https://tw-easing-gradients.dev',
+	url: 'https://tw-easing-gradients.enisdev.com',
 	ogImage: {
-		url: 'https://tw-easing-gradients.dev/og.png',
+		url: 'https://tw-easing-gradients.enisdev.com/og.png',
 		height: '630',
 		width: '1200'
 	},
