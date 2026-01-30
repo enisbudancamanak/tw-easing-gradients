@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2
+
+### Patch Changes
+
+- a08c91b: Update README with full documentation, OG image, and CSS output example
+
 ## 1.0.1
 
 ### Patch Changes
