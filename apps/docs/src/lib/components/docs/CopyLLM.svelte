@@ -39,7 +39,7 @@ Help me understand how to use it. Be ready to explain concepts, give examples, o
 />
 
 <div
-	class="group/buttons bg-brand relative flex rounded-lg *:data-[slot=button]:focus-visible:relative *:data-[slot=button]:focus-visible:z-10"
+	class="group/buttons bg-brand relative hidden rounded-lg *:data-[slot=button]:focus-visible:relative *:data-[slot=button]:focus-visible:z-10 xl:flex"
 >
 	<Button
 		variant="brand"

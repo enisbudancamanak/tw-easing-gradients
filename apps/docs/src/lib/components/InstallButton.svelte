@@ -19,7 +19,7 @@
 	class="group border-border bg-foreground/10 text-muted-foreground hover:bg-foreground/15 flex items-center gap-3 rounded-lg border px-5 py-3 font-mono text-sm transition-colors"
 >
 	<span class="text-muted-foreground/70">$</span>
-	<span>{command}</span>
+	<span class="whitespace-nowrap">{command}</span>
 	{#if clipboard.status === 'success'}
 		<div in:scale={{ duration: 150, start: 0.85 }}>
 			<Check class="size-4 text-emerald-400" />

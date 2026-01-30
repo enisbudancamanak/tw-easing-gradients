@@ -27,7 +27,7 @@
 					index.html
 				</span>
 			</div>
-			<div class="p-5">
+			<div class="overflow-x-auto p-5">
 				<pre class="font-mono text-sm leading-relaxed"><code><span
 							class="text-muted-foreground">&lt;div</span> <span
 							class="text-muted-foreground">class</span>=<span

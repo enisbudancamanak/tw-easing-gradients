@@ -1,5 +1,5 @@
-<div class="not-prose my-6">
-	<div class="grid gap-4 md:grid-cols-2">
+<div class="not-prose @container my-6">
+	<div class="grid gap-4 @xl:grid-cols-2">
 		<div
 			class="bg-ease-in-out-to-br rounded-xl from-violet-600 to-pink-500 p-6"
 		>

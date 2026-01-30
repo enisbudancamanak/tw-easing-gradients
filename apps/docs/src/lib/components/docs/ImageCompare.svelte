@@ -8,7 +8,7 @@
 		rightLabel?: string;
 		leftClass: string;
 		rightClass: string;
-		height?: string;
+		class?: string;
 		position?: number;
 	}
 
@@ -17,7 +17,7 @@
 		rightLabel = 'Eased (tw-easing-gradients)',
 		leftClass,
 		rightClass,
-		height = '300px',
+		class: className = 'h-[300px]',
 		position = $bindable(50)
 	}: Props = $props();
 
@@ -49,8 +49,10 @@
 
 <div
 	bind:this={container}
-	class="border-muted relative cursor-ew-resize overflow-hidden rounded-xl border select-none"
-	style="height: {height};"
+	class={cn(
+		'border-muted relative cursor-ew-resize overflow-hidden rounded-xl border select-none',
+		className
+	)}
 	onpointerdown={handlePointerDown}
 	onpointermove={handlePointerMove}
 	onpointerup={handlePointerUp}
@@ -87,7 +89,7 @@
 
 	<!-- Slider handle -->
 	<div
-		class="pointer-events-none absolute inset-y-0 z-10 flex items-center"
+		class="pointer-events-none absolute inset-y-0 z-5 flex items-center"
 		style="left: {position}%;"
 	>
 		<div class="relative h-full w-0.5 bg-white shadow-lg">

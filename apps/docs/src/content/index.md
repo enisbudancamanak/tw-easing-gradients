@@ -7,12 +7,15 @@ section: Overview
 <script>
 	import ImageOverlayDemo from '$lib/components/docs/ImageOverlayDemo.svelte'
 	import CardOverlay from '$lib/components/docs/CardOverlay.svelte'
+	import PseudoOverlay from '$lib/components/docs/examples/PseudoOverlay.svelte'
 	import GradientComparison from '$lib/components/docs/GradientComparison.svelte'
 </script>
 
 <ImageOverlayDemo />
 
 **tw-easing-gradients** creates smooth, perceptually uniform gradients for Tailwind CSS v4. Drag the slider above to see the difference.
+
+<PseudoOverlay />
 
 ## The Problem
 

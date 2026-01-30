@@ -11,6 +11,7 @@ section: Reference
 	import FadeOut from '$lib/components/docs/examples/FadeOut.svelte'
 	import ButtonGradient from '$lib/components/docs/examples/ButtonGradient.svelte'
 	import LoadingSkeleton from '$lib/components/docs/examples/LoadingSkeleton.svelte'
+	import PseudoOverlay from '$lib/components/docs/examples/PseudoOverlay.svelte'
 	import { Callout } from '@svecodocs/kit'
 </script>
 
@@ -27,6 +28,23 @@ Create smooth fade overlays on hero images:
 	<div class="absolute bottom-8 left-8">
 		<h1 class="text-4xl font-bold text-white">Hero Title</h1>
 	</div>
+</div>
+```
+
+## Pseudo-Element Overlays
+
+Apply gradients to `::before` and `::after` pseudo-elements for dual overlays:
+
+<PseudoOverlay variant="black" />
+
+```html
+<div
+	class="relative bg-white before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-1/3
+    before:bg-ease-to-b before:from-black before:to-transparent before:content-['']
+    after:absolute after:inset-x-0 after:bottom-0 after:z-10 after:h-1/3
+    after:bg-ease-to-t after:from-black after:to-transparent after:content-['']"
+>
+	<span class="relative z-20">Content</span>
 </div>
 ```
 

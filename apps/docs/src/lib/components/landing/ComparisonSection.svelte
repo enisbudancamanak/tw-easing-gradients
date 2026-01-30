@@ -19,7 +19,7 @@
 		<ImageCompare
 			leftClass="bg-linear-to-t from-black to-transparent"
 			rightClass="bg-ease-in-out-to-t from-black to-transparent"
-			height="320px"
+			class="aspect-4/3 sm:aspect-auto sm:h-80"
 			bind:position
 		/>
 		<BandingAnnotation {position} />
