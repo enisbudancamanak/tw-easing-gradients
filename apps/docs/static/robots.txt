@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tw-easing-gradients.enisdev.com/sitemap.xml

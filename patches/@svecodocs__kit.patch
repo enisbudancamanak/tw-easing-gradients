@@ -1,0 +1,84 @@
+diff --git a/dist/components/layout/doc-page.svelte b/dist/components/layout/doc-page.svelte
+index 8c6a48f15eacaaf75ce19247e5944206d4db78a2..ce709c52b4733dfc491412f06f137d23289f28b3 100644
+--- a/dist/components/layout/doc-page.svelte
++++ b/dist/components/layout/doc-page.svelte
+@@ -1,7 +1,7 @@
+ <script lang="ts">
+ 	import PageHeader from "./page-header/page-header.svelte";
+ 	import Toc from "../toc/toc.svelte";
+-	import type { Component, ComponentProps } from "svelte";
++	import type { Component, ComponentProps, Snippet } from "svelte";
+ 	import type { Contributor, TOCEntry } from "../../types.js";
+ 	import Metadata from "../metadata.svelte";
+ 	import ContributorSection from "../contributors-section.svelte";
+@@ -14,6 +14,7 @@
+ 		toc,
+ 		metadata = {},
+ 		contributors = [],
++		headerActions,
+ 	}: {
+ 		component: Component;
+ 		componentProps?: Record<string, unknown>;
+@@ -22,6 +23,7 @@
+ 		toc: TOCEntry[];
+ 		metadata?: ComponentProps<typeof Metadata>;
+ 		contributors?: Contributor[];
++		headerActions?: Snippet;
+ 	} = $props();
+ 
+ 	const PageComponent = $derived(component);
+@@ -41,7 +43,7 @@
+ 		<Toc toc={{ items: tocItems }} type="mobile" />
+ 	</aside>
+ 	<main class="mx-auto w-full min-w-0 max-w-[640px] pb-12 2xl:max-w-[760px]" id="main-content">
+-		<PageHeader {title} {description} />
++		<PageHeader {title} {description} actions={headerActions} />
+ 		<PageComponent {...componentProps} />
+ 		<ContributorSection {contributors} />
+ 	</main>
+diff --git a/dist/components/layout/page-header/page-header.svelte b/dist/components/layout/page-header/page-header.svelte
+index a50b5e127939db175e58719ca5479e1d0f5193ac..48c9df7958f596da293d7bafc286dce7e598c4a8 100644
+--- a/dist/components/layout/page-header/page-header.svelte
++++ b/dist/components/layout/page-header/page-header.svelte
+@@ -4,16 +4,19 @@
+ 	import { cn } from "../../../utils.js";
+ 	import PageHeaderDescription from "./page-header-description.svelte";
+ 	import PageHeaderHeading from "./page-header-heading.svelte";
++	import type { Snippet } from "svelte";
+ 
+ 	let {
+ 		class: className,
+ 		children,
+ 		title,
+ 		description = "",
++		actions,
+ 		...restProps
+ 	}: PrimitiveAttributes & {
+ 		title: string;
+ 		description?: string;
++		actions?: Snippet;
+ 	} = $props();
+ </script>
+ 
+@@ -21,7 +24,10 @@
+ 	{#if children}
+ 		{@render children?.()}
+ 	{:else}
+-		<PageHeaderHeading>{title}</PageHeaderHeading>
++		<div class="flex items-center justify-between gap-4">
++			<PageHeaderHeading>{title}</PageHeaderHeading>
++			{#if actions}{@render actions()}{/if}
++		</div>
+ 		{#if description}
+ 			<PageHeaderDescription>{description}</PageHeaderDescription>
+ 		{/if}
+diff --git a/dist/styles/shared.css b/dist/styles/shared.css
+index 3d8ea3a18e86cd9e8229847bf45d8394265be16a..4a8a9a915ab7be74930641e4e97bcd532af006d6 100644
+--- a/dist/styles/shared.css
++++ b/dist/styles/shared.css
+@@ -1,4 +1,4 @@
+-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
++
+ 
+ @import "tailwindcss";
+ @import "tw-animate-css";

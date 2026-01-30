@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+@import '@svecodocs/kit/theme-sky.css';
+@import '@svecodocs/kit/globals.css';
+@source '../node_modules/@svecodocs/kit';
+@plugin 'tw-easing-gradients';
+
+@theme inline {
+	--color-popover: var(--theme-color-background);
+	--color-popover-foreground: var(--theme-color-foreground);
+	--color-card: var(--theme-color-background);
+	--color-card-foreground: var(--theme-color-foreground);
+	--color-input: var(--theme-color-border);
+}
+
+button:not([disabled]),
+[role='button']:not([disabled]) {
+	cursor: pointer;
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://tw-easing-gradients.enisdev.com/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://tw-easing-gradients.enisdev.com/docs</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tw-easing-gradients.enisdev.com/docs/getting-started</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tw-easing-gradients.enisdev.com/docs/examples</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tw-easing-gradients.enisdev.com/docs/utilities</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tw-easing-gradients.enisdev.com/docs/api-reference</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tw-easing-gradients.enisdev.com/playground</loc>
+    <priority>0.7</priority>
+  </url>
+</urlset>
