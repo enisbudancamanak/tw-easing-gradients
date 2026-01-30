@@ -19,7 +19,12 @@
 	class="group border-border bg-foreground/10 text-muted-foreground hover:bg-foreground/15 flex items-center gap-3 rounded-lg border px-5 py-3 font-mono text-sm transition-colors"
 >
 	<span class="text-muted-foreground/70">$</span>
-	<span class="whitespace-nowrap">{command}</span>
+	<span>
+		<span class="text-foreground">npm install</span>
+		<span class="bg-foreground/10 rounded px-1.5 whitespace-nowrap">
+			tw-easing-gradients
+		</span>
+	</span>
 	{#if clipboard.status === 'success'}
 		<div in:scale={{ duration: 150, start: 0.85 }}>
 			<Check class="size-4 text-emerald-400" />

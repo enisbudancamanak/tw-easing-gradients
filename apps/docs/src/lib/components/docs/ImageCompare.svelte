@@ -33,7 +33,7 @@
 
 	function handlePointerDown(e: PointerEvent) {
 		isDragging = true;
-		(e.target as HTMLElement).setPointerCapture(e.pointerId);
+		container.setPointerCapture(e.pointerId);
 		updatePosition(e.clientX);
 	}
 
@@ -50,13 +50,13 @@
 <div
 	bind:this={container}
 	class={cn(
-		'border-muted relative cursor-ew-resize overflow-hidden rounded-xl border select-none',
+		'border-muted relative cursor-ew-resize touch-none overflow-hidden rounded-xl border select-none',
 		className
 	)}
 	onpointerdown={handlePointerDown}
 	onpointermove={handlePointerMove}
 	onpointerup={handlePointerUp}
-	onpointerleave={handlePointerUp}
+	onpointercancel={handlePointerUp}
 	role="slider"
 	aria-valuenow={Math.round(position)}
 	aria-valuemin={0}

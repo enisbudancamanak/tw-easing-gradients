@@ -4,6 +4,7 @@
 	import ComparisonSection from '$lib/components/landing/ComparisonSection.svelte';
 	import FeaturesSection from '$lib/components/landing/FeaturesSection.svelte';
 	import CodeExampleSection from '$lib/components/landing/CodeExampleSection.svelte';
+	import PseudoElementSection from '$lib/components/landing/PseudoElementSection.svelte';
 	import EasingGallerySection from '$lib/components/landing/EasingGallerySection.svelte';
 	import FooterSection from '$lib/components/landing/FooterSection.svelte';
 
@@ -22,6 +23,7 @@
 	<SiteHeader />
 	<HeroSection stars={data.stars} />
 	<ComparisonSection />
+	<PseudoElementSection />
 	<FeaturesSection />
 	<CodeExampleSection />
 	<EasingGallerySection />

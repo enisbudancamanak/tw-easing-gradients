@@ -10,7 +10,6 @@
 </script>
 
 {#if visible}
-	<!-- Mobile: oben -->
 	<div
 		class="pointer-events-none absolute bottom-1/2 left-[8%] z-20 -translate-y-2 lg:hidden @2xl:hidden"
 	>
@@ -30,7 +29,7 @@
 				font-weight="700"
 				class="fill-brand"
 			>
-				Banding!
+				Banding
 			</text>
 			<path
 				d="M 40,30 C 26,42 56,56 38,68 C 22,78 48,84 40,100"
@@ -49,7 +48,6 @@
 		</svg>
 	</div>
 
-	<!-- Desktop: links -->
 	<div
 		class="pointer-events-none absolute top-1/2 -left-42.5 z-20 hidden -translate-y-1/2 lg:block @2xl:block"
 	>
@@ -61,14 +59,14 @@
 			class="overflow-visible"
 		>
 			<text
-				x="6"
-				y="48"
+				x="12"
+				y="44"
 				font-family="'Caveat', cursive"
 				font-size="32"
 				font-weight="700"
 				class="fill-brand"
 			>
-				Banding!
+				Banding
 			</text>
 			<path
 				d="M 112,42 C 124,26 132,56 146,36 C 158,18 166,54 180,40 C 190,32 200,44 210,40"
