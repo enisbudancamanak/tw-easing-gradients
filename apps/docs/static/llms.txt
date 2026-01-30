@@ -1,0 +1,43 @@
+# tw-easing-gradients
+
+> A Tailwind CSS v4 plugin for smooth, naturally blending gradients using cubic bezier easing and oklch color interpolation.
+
+## Overview
+
+tw-easing-gradients solves the problem of harsh color transitions in CSS gradients. By applying easing functions (ease, ease-in, ease-out, ease-in-out) to gradient color stops and using the perceptually uniform OKLCH color space, it creates gradients that look natural and blend seamlessly.
+
+## Key Features
+
+- Cubic Bezier easing functions for smooth color distribution
+- OKLCH color space interpolation (perceptually uniform)
+- 8 gradient directions (top, right, bottom, left, and diagonals)
+- Transparency fade support (color to transparent)
+- Configurable number of stops (2-100, default: 15)
+
+## Installation
+
+npm install tw-easing-gradients
+
+## Usage
+
+Add to your CSS:
+@import 'tailwindcss';
+@plugin "tw-easing-gradients";
+
+Use in HTML:
+<div class="bg-ease-in-out-to-br from-violet-600 to-pink-500">
+
+## Documentation
+
+- Getting Started: https://tw-easing-gradients.enisdev.com/docs/getting-started
+- API Reference: https://tw-easing-gradients.enisdev.com/docs/api-reference
+- Examples: https://tw-easing-gradients.enisdev.com/docs/examples
+
+## Source Code
+
+GitHub: https://github.com/enisbudancamanak/tw-easing-gradients
+npm: https://www.npmjs.com/package/tw-easing-gradients
+
+## License
+
+MIT

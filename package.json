@@ -1,0 +1,27 @@
+{
+  "name": "tw-easing-gradients-monorepo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --filter tw-easing-gradients build",
+    "build:docs": "pnpm --filter docs build",
+    "dev": "pnpm --filter docs dev",
+    "dev:plugin": "pnpm --filter tw-easing-gradients dev",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.8",
+    "typescript": "^5.7.3"
+  },
+  "packageManager": "pnpm@10.28.0",
+  "pnpm": {
+    "patchedDependencies": {
+      "@svecodocs/kit": "patches/@svecodocs__kit.patch"
+    },
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}
