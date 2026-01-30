@@ -9,6 +9,7 @@ section: Overview
 	import CardOverlay from '$lib/components/docs/CardOverlay.svelte'
 	import PseudoOverlay from '$lib/components/docs/examples/PseudoOverlay.svelte'
 	import GradientComparison from '$lib/components/docs/GradientComparison.svelte'
+	import { Card, CardGrid } from '@svecodocs/kit'
 </script>
 
 <ImageOverlayDemo />
@@ -47,3 +48,14 @@ A common use case: text overlays on images. The linear gradient stays solid and 
 ```
 
 <GradientComparison />
+
+## Next Steps
+
+<CardGrid cols={2}>
+	<Card title="Getting Started" href="/docs/getting-started">
+		Install and configure tw-easing-gradients in your project.
+	</Card>
+	<Card title="Playground" href="/playground">
+		Experiment with easing gradients interactively.
+	</Card>
+</CardGrid>

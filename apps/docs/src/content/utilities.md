@@ -9,7 +9,7 @@ section: Reference
 	import DirectionsShowcase from '$lib/components/docs/utilities/DirectionsShowcase.svelte'
 	import ColorExamples from '$lib/components/docs/utilities/ColorExamples.svelte'
 	import TransparencyExamples from '$lib/components/docs/utilities/TransparencyExamples.svelte'
-	import { Tabs, TabItem } from '@svecodocs/kit'
+	import { Tabs, TabItem, Card, CardGrid } from '@svecodocs/kit'
 </script>
 
 ## Syntax
@@ -124,3 +124,14 @@ Skip `to-*` and the plugin fades to transparent automatically.
 
 </TabItem>
 </Tabs>
+
+## Next Steps
+
+<CardGrid cols={2}>
+	<Card title="Examples" href="/docs/examples">
+		Practical use cases with live previews.
+	</Card>
+	<Card title="API Reference" href="/docs/api-reference">
+		Configuration options and technical details.
+	</Card>
+</CardGrid>

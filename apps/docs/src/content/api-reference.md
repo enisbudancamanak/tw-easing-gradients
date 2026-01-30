@@ -5,7 +5,7 @@ section: Reference
 ---
 
 <script>
-	import { Callout, Collapsible } from '@svecodocs/kit'
+	import { Callout, Collapsible, Card, CardGrid } from '@svecodocs/kit'
 </script>
 
 ## Plugin Options
@@ -110,3 +110,14 @@ import type {
 const easing: EasingFunction = 'ease-in-out';
 const dir: Direction = 'br';
 ```
+
+## Next Steps
+
+<CardGrid cols={2}>
+	<Card title="Examples" href="/docs/examples">
+		Practical use cases with live previews.
+	</Card>
+	<Card title="Playground" href="/playground">
+		Experiment with easing gradients interactively.
+	</Card>
+</CardGrid>

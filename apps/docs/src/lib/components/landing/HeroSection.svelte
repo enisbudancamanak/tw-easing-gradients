@@ -2,6 +2,7 @@
 	import InstallButton from '$lib/components/InstallButton.svelte';
 	import GitHubStarButton from '$lib/components/GitHubStarButton.svelte';
 	import { BRAND_COLORS } from '$lib/constants';
+	import { Button } from '@svecodocs/kit';
 
 	interface Props {
 		stars?: number | null;
@@ -21,12 +22,12 @@
 	>
 		<div class="flex flex-col items-center text-center">
 			<div
-				class="bg-ease-in-out-to-r mb-8 h-1.5 w-32 rounded-full"
+				class="bg-ease-in-out-to-r mb-4 h-px w-32 rounded-full sm:h-1.5"
 				style="--tw-gradient-from: {BRAND_COLORS.from}; --tw-gradient-to: {BRAND_COLORS.to};"
 			></div>
 
 			<h1
-				class="max-w-3xl text-4xl font-bold tracking-tight text-balance sm:text-6xl"
+				class="max-w-3xl text-4xl leading-tight font-bold tracking-tight text-balance sm:text-6xl"
 			>
 				easing gradients for
 				<span
@@ -49,18 +50,8 @@
 			</div>
 
 			<div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-				<a
-					href="/docs"
-					class="bg-foreground text-background hover:bg-foreground/90 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
-				>
-					Get Started
-				</a>
-				<a
-					href="/playground"
-					class="border-border text-muted-foreground hover:border-muted-foreground hover:text-foreground rounded-lg border bg-transparent px-5 py-2.5 text-sm font-medium transition-colors"
-				>
-					Playground
-				</a>
+				<Button variant="default" href="/docs">Get Started</Button>
+				<Button variant="brand" href="/playground">Playground</Button>
 				<GitHubStarButton {stars} />
 			</div>
 		</div>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Star from 'phosphor-svelte/lib/Star';
 	import GithubIcon from '$lib/components/icons/GithubIcon.svelte';
+	import { Button } from '@svecodocs/kit';
 
 	interface Props {
 		repo?: string;
@@ -15,11 +16,11 @@
 	}: Props = $props();
 </script>
 
-<a
+<Button
+	variant="subtle"
 	href="https://github.com/{repo}"
 	target="_blank"
 	rel="noopener noreferrer"
-	class="group border-border bg-muted/50 text-muted-foreground hover:border-muted-foreground hover:bg-muted hover:text-foreground inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm transition-colors {className}"
 >
 	<GithubIcon class="size-4" />
 	<span>Star on GitHub</span>
@@ -31,4 +32,4 @@
 			<span class="tabular-nums">{stars}</span>
 		</span>
 	{/if}
-</a>
+</Button>

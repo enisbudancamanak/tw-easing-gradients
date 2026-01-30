@@ -13,27 +13,21 @@
 	class="border-border/50 bg-background-secondary/80 sticky top-0 z-50 border-b backdrop-blur-xl"
 >
 	<div
-		class="mx-auto flex h-14 max-w-screen-xl items-center justify-between px-4 sm:px-6"
+		class="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4 sm:px-6"
 	>
 		<a href="/" class="flex items-center">
-			<Logo variant="dark" class="h-5 w-auto" />
+			<Logo variant="dark" class="h-6 w-auto" />
 		</a>
-		<nav class="flex items-center gap-1">
+		<nav class="flex items-center">
 			<a
 				href="/docs"
-				class="rounded-md px-3 py-1.5 text-sm transition-colors {activeRoute ===
-				'docs'
-					? 'text-white'
-					: 'text-muted-foreground hover:text-foreground'}"
+				class="text-muted-foreground hover:text-foreground px-1.5 text-sm transition-colors sm:px-3"
 			>
 				Docs
 			</a>
 			<a
 				href="/playground"
-				class="rounded-md px-3 py-1.5 text-sm transition-colors {activeRoute ===
-				'playground'
-					? 'text-white'
-					: 'text-muted-foreground hover:text-foreground'}"
+				class="text-muted-foreground hover:text-foreground px-1.5 text-sm transition-colors sm:px-3"
 			>
 				Playground
 			</a>
@@ -41,7 +35,7 @@
 				href="https://github.com/enisbudancamanak/tw-easing-gradients"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="text-muted-foreground hover:text-foreground ml-2 rounded-md p-2 transition-colors"
+				class="text-muted-foreground hover:text-foreground p-2 transition-colors"
 				aria-label="GitHub"
 			>
 				<GithubIcon class="size-5" />

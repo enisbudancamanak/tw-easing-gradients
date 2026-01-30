@@ -12,7 +12,7 @@ section: Reference
 	import ButtonGradient from '$lib/components/docs/examples/ButtonGradient.svelte'
 	import LoadingSkeleton from '$lib/components/docs/examples/LoadingSkeleton.svelte'
 	import PseudoOverlay from '$lib/components/docs/examples/PseudoOverlay.svelte'
-	import { Callout } from '@svecodocs/kit'
+	import { Callout, Card, CardGrid } from '@svecodocs/kit'
 </script>
 
 ## Hero Image Overlay
@@ -121,3 +121,14 @@ Animated loading placeholder with smooth gradients:
 <Callout type="warning">
 The `via-*` utility is not supported with easing gradients. Use only `from-*` and `to-*` for color stops.
 </Callout>
+
+## Next Steps
+
+<CardGrid cols={2}>
+	<Card title="API Reference" href="/docs/api-reference">
+		Configuration options and technical details.
+	</Card>
+	<Card title="Playground" href="/playground">
+		Experiment with easing gradients interactively.
+	</Card>
+</CardGrid>
