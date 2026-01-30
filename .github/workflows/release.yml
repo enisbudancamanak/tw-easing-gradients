@@ -50,12 +50,3 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Create GitHub Release
-        if: steps.changesets.outputs.published == 'true'
-        run: |
-          VERSION=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[0].version')
-          gh release create "v${VERSION}" \
-            --title "v${VERSION}" \
-            --notes-file packages/tw-easing-gradients/CHANGELOG.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
