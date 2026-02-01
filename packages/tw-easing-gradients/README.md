@@ -1,20 +1,42 @@
-![tw-easing-gradients banner](https://raw.githubusercontent.com/enisbudancamanak/tw-easing-gradients/main/apps/docs/static/og.png)
-
 <div align="center">
-
-[![License](https://img.shields.io/github/license/enisbudancamanak/tw-easing-gradients?style=flat-square)](https://github.com/enisbudancamanak/tw-easing-gradients/blob/main/LICENSE) [![npm version](https://img.shields.io/npm/v/tw-easing-gradients?style=flat-square)](https://www.npmjs.com/package/tw-easing-gradients)
-
+  <img src="https://raw.githubusercontent.com/enisbudancamanak/tw-easing-gradients/main/apps/docs/static/logo-rounded.png" alt="tw-easing-gradients" width="80" height="80" />
+  <h1>tw-easing-gradients</h1>
 </div>
 
-A Tailwind CSS v4 plugin that creates smooth, naturally blending gradients using cubic bezier easing and oklch color interpolation.
+<div align="center">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS v4" />
+  <img src="https://img.shields.io/npm/v/tw-easing-gradients?style=flat-square&color=269BDE" alt="npm version" />
+  <img src="https://img.shields.io/npm/dw/tw-easing-gradients?style=flat-square&color=4480E7" alt="npm downloads" />
+  <img src="https://img.shields.io/github/license/enisbudancamanak/tw-easing-gradients?style=flat-square&color=6366F1" alt="License" />
+</div>
+
+<br />
+
+<div align="center">
+  <strong>Smooth, naturally blending gradients for Tailwind CSS</strong>
+  <br />
+  <sub>Cubic bezier easing • oklch color interpolation • Drop-in replacement</sub>
+</div>
+
+---
+
+## Why?
+
+Standard CSS gradients distribute colors linearly, resulting in sharp edges at the start and end of the gradient. This is particularly noticeable in transparency fades, where the transition looks abrupt rather than natural.
+
+This plugin distributes color stops along an easing curve using `color-mix()` in oklch color space, resulting in smooth, natural-looking transitions.
+
+<br />
+<div align="center">
+  <img src="https://raw.githubusercontent.com/enisbudancamanak/tw-easing-gradients/main/apps/docs/static/og.png" alt="Comparison" width="800" />
+</div>
+<br />
 
 ## Installation
 
 ```bash
 npm install tw-easing-gradients
 ```
-
-Add the plugin to your CSS file:
 
 ```css
 @import 'tailwindcss';
@@ -23,93 +45,60 @@ Add the plugin to your CSS file:
 
 ## Usage
 
-**Transparency Fade**
-
 ```html
-<div class="bg-ease-to-b from-black">
-  <!-- Fades from black to transparent -->
-</div>
+<!-- Fade to transparent -->
+<div class="bg-ease-to-b from-black"></div>
+
+<!-- Color-to-color gradient -->
+<div class="bg-ease-in-out-to-br from-violet-600 to-pink-500"></div>
 ```
 
-**Color-to-Color Gradient**
+**Try it live:** [Playground](https://tw-easing-gradients.enisdev.com/playground)
 
-```html
-<div class="bg-ease-in-out-to-br from-violet-600 to-pink-500">
-  <!-- Smooth diagonal gradient -->
-</div>
-```
+## Easing Functions
 
-## CSS Output Example
+| Class | Effect |
+|-------|--------|
+| `bg-ease-to-*` | Standard ease (most natural) |
+| `bg-ease-in-to-*` | Slow start, fast end |
+| `bg-ease-out-to-*` | Fast start, slow end |
+| `bg-ease-in-out-to-*` | Slow start and end |
 
-The plugin generates multiple color stops using `color-mix()` in oklch color space:
+## Directions
 
-**Input (Tailwind):**
-```html
-<div class="bg-ease-in-out-to-r from-[#6366F1] to-[#06B6D4]">
-```
-
-**Generated CSS:**
-```css
-.bg-ease-in-out-to-r {
-  background-image: linear-gradient(
-    to right,
-    #6366F1 0%,
-    oklch(from color-mix(in oklch, #06B6D4 1.3%, #6366F1) l c h / alpha) 8.1%,
-    oklch(from color-mix(in oklch, #06B6D4 4.9%, #6366F1) l c h / alpha) 15.5%,
-    oklch(from color-mix(in oklch, #06B6D4 10.4%, #6366F1) l c h / alpha) 22.5%,
-    oklch(from color-mix(in oklch, #06B6D4 17.5%, #6366F1) l c h / alpha) 29%,
-    oklch(from color-mix(in oklch, #06B6D4 25.9%, #6366F1) l c h / alpha) 35.3%,
-    oklch(from color-mix(in oklch, #06B6D4 35.2%, #6366F1) l c h / alpha) 41.2%,
-    oklch(from color-mix(in oklch, #06B6D4 45%, #6366F1) l c h / alpha) 47.1%,
-    oklch(from color-mix(in oklch, #06B6D4 55%, #6366F1) l c h / alpha) 52.9%,
-    oklch(from color-mix(in oklch, #06B6D4 64.8%, #6366F1) l c h / alpha) 58.8%,
-    oklch(from color-mix(in oklch, #06B6D4 74.1%, #6366F1) l c h / alpha) 64.7%,
-    oklch(from color-mix(in oklch, #06B6D4 82.5%, #6366F1) l c h / alpha) 71%,
-    oklch(from color-mix(in oklch, #06B6D4 89.6%, #6366F1) l c h / alpha) 77.5%,
-    oklch(from color-mix(in oklch, #06B6D4 95.1%, #6366F1) l c h / alpha) 84.5%,
-    oklch(from color-mix(in oklch, #06B6D4 98.7%, #6366F1) l c h / alpha) 91.9%,
-    #06B6D4 100%
-  );
-}
-```
-
-The easing function controls the distribution of color stops, creating smooth transitions instead of harsh linear blends.
-
-## Configuration
-
-Configure the number of gradient stops (default: 15):
-
-```css
-@plugin "tw-easing-gradients" {
-  stops: 20;
-}
-```
-
-More stops create smoother gradients but increase CSS output size.
-
-## Inspiration & Prior Art
-
-This plugin is inspired by the fantastic work on easing gradients:
-
-- **[larsenwork.com](https://larsenwork.com)** — Andreas Larsen's original easing gradients concept and editor
-- **[postcss-easing-gradients](https://github.com/larsenwork/postcss-easing-gradients)** — PostCSS plugin for easing gradients
-- **[CSSWG Proposal](https://github.com/w3c/csswg-drafts/issues/1332)** — The W3C proposal for native easing gradient support
-
-The core idea: linear gradients often have hard edges where they start and end. By controlling the color mix with easing functions and using perceptually uniform color spaces like oklch, we can create gradients that look natural and blend seamlessly.
+`to-t` · `to-r` · `to-b` · `to-l` · `to-tl` · `to-tr` · `to-bl` · `to-br`
 
 ## Documentation
 
-Full API reference, examples, and interactive playground: [tw-easing-gradients.enisdev.com](https://tw-easing-gradients.enisdev.com)
+[tw-easing-gradients.enisdev.com/docs](https://tw-easing-gradients.enisdev.com/docs)
+
+## Prior Art & Inspiration
+
+- [larsenwork.com](https://larsenwork.com/easing-gradients) — Original easing gradients concept
+- [postcss-easing-gradients](https://github.com/larsenwork/postcss-easing-gradients) — PostCSS implementation
+- [CSSWG Proposal](https://github.com/w3c/csswg-drafts/issues/1332) — W3C proposal for native support
+
+## AI Coding Assistant
+
+A [SKILL.md](https://github.com/enisbudancamanak/tw-easing-gradients/tree/main/.claude/skills/tw-easing-gradients) is included for AI assistants (Claude Code, Codex, OpenCode) to automatically upgrade `bg-gradient-to-*` utilities.
+
+---
+
+## Roadmap
+
+- [ ] Custom bezier functions
+- [ ] Radial gradients
+- [ ] Conic gradients
 
 ## Contributing
 
-Contributions are welcome! Please open an issue first to discuss larger changes.
+Contributions welcome! Whether it's a bug fix, feature, or documentation improvement.
 
-1. Fork the repository
-2. Create a branch (`git checkout -b feature/my-feature`)
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes
-4. Open a Pull Request
+4. Push to the branch and open a PR
 
 ## License
 
-[MIT](https://github.com/enisbudancamanak/tw-easing-gradients/blob/main/LICENSE)
+tw-easing-gradients is open-source and free to use. Licensed under [MIT](https://github.com/enisbudancamanak/tw-easing-gradients/blob/main/LICENSE).
