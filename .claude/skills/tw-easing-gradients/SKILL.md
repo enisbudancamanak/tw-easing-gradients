@@ -107,6 +107,15 @@ Four easing functions available:
 | `to-bl` | to bottom left |
 | `to-br` | to bottom right |
 
+## Custom Bezier
+
+Arbitrary easing curves via bracket notation:
+
+```html
+<div class="bg-ease-to-r-[0.22,1,0.36,1] from-black"></div>
+<div class="bg-ease-to-b-[0.42,0,0.58,1] from-violet-600 to-pink-500"></div>
+```
+
 ## Configuration
 
 Configure gradient stops in CSS (default: 15):

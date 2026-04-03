@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { getCoordinates } from './easing.js';
+import {
+	getCoordinates,
+	getCoordinatesFromControlPoints,
+	parseBezierValues,
+} from './easing.js';
 
 describe('getCoordinates', () => {
 	describe('valid inputs', () => {
@@ -15,15 +19,15 @@ describe('getCoordinates', () => {
 
 		it('first point starts at (0, 0)', () => {
 			const coords = getCoordinates('ease', 15);
-			expect(coords[0].x).toBeCloseTo(0, 5);
-			expect(coords[0].y).toBeCloseTo(0, 5);
+			expect(coords[0].x).toBe(0);
+			expect(coords[0].y).toBe(0);
 		});
 
 		it('last point ends at (1, 1)', () => {
 			const coords = getCoordinates('ease', 15);
 			const last = coords[coords.length - 1];
-			expect(last.x).toBeCloseTo(1, 5);
-			expect(last.y).toBeCloseTo(1, 5);
+			expect(last.x).toBe(1);
+			expect(last.y).toBe(1);
 		});
 
 		it('all coordinates are between 0 and 1', () => {
@@ -98,5 +102,71 @@ describe('getCoordinates', () => {
 				'stops must be between 2 and 100',
 			);
 		});
+	});
+});
+
+describe('getCoordinatesFromControlPoints', () => {
+	it('returns correct number of points', () => {
+		const coords = getCoordinatesFromControlPoints([0.25, 0.1, 0.25, 1], 10);
+		expect(coords).toHaveLength(11);
+	});
+
+	it('first point is (0, 0) and last is (1, 1)', () => {
+		const coords = getCoordinatesFromControlPoints([0.42, 0, 0.58, 1], 15);
+		expect(coords[0].x).toBe(0);
+		expect(coords[0].y).toBe(0);
+		expect(coords[coords.length - 1].x).toBe(1);
+		expect(coords[coords.length - 1].y).toBe(1);
+	});
+
+	it('produces same result as getCoordinates for known easings', () => {
+		const fromNamed = getCoordinates('ease-in', 15);
+		const fromPoints = getCoordinatesFromControlPoints([0.42, 0, 1, 1], 15);
+		expect(fromPoints).toEqual(fromNamed);
+	});
+
+	it('works with custom control points', () => {
+		const coords = getCoordinatesFromControlPoints([0.22, 1, 0.36, 1], 10);
+		expect(coords).toHaveLength(11);
+		for (const { x, y } of coords) {
+			expect(x).toBeGreaterThanOrEqual(0);
+			expect(x).toBeLessThanOrEqual(1);
+		}
+	});
+
+	it('throws for stops out of range', () => {
+		expect(() => getCoordinatesFromControlPoints([0, 0, 1, 1], 1)).toThrow(
+			'stops must be between 2 and 100',
+		);
+	});
+});
+
+describe('parseBezierValues', () => {
+	it('parses comma-separated values', () => {
+		expect(parseBezierValues('0.22,1,0.36,1')).toEqual([0.22, 1, 0.36, 1]);
+	});
+
+	it('parses with spaces', () => {
+		expect(parseBezierValues('0.22, 1, 0.36, 1')).toEqual([0.22, 1, 0.36, 1]);
+	});
+
+	it('parses cubic-bezier() syntax', () => {
+		expect(parseBezierValues('cubic-bezier(0.42,0,0.58,1)')).toEqual([0.42, 0, 0.58, 1]);
+	});
+
+	it('returns null for too few values', () => {
+		expect(parseBezierValues('0.22,1,0.36')).toBeNull();
+	});
+
+	it('returns null for too many values', () => {
+		expect(parseBezierValues('0.22,1,0.36,1,0.5')).toBeNull();
+	});
+
+	it('returns null for non-numeric values', () => {
+		expect(parseBezierValues('a,b,c,d')).toBeNull();
+	});
+
+	it('returns null for empty string', () => {
+		expect(parseBezierValues('')).toBeNull();
 	});
 });

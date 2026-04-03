@@ -1,9 +1,13 @@
 import plugin from 'tailwindcss/plugin';
-import { getCoordinates } from './easing.js';
-import type { Direction, EasingFunction, PluginOptions } from './types.js';
+import {
+	getCoordinates,
+	getCoordinatesFromControlPoints,
+	parseBezierValues,
+} from './easing.js';
+import type { EasingFunction, PluginOptions } from './types.js';
 import { DIRECTIONS, EASING_FUNCTIONS } from './types.js';
 
-export { getCoordinates } from './easing.js';
+export { getCoordinates, getCoordinatesFromControlPoints, parseBezierValues } from './easing.js';
 export type {
 	Coordinate,
 	Direction,
@@ -13,22 +17,8 @@ export type {
 
 type TailwindPlugin = ReturnType<typeof plugin.withOptions<PluginOptions>>;
 
-const EASINGS: readonly EasingFunction[] = [
-	'ease',
-	'ease-in',
-	'ease-out',
-	'ease-in-out',
-];
-const DIRECTIONS_KEYS: readonly Direction[] = [
-	't',
-	'r',
-	'b',
-	'l',
-	'tl',
-	'tr',
-	'bl',
-	'br',
-];
+const EASINGS = Object.keys(EASING_FUNCTIONS) as EasingFunction[];
+const DIRECTION_KEYS = Object.keys(DIRECTIONS) as (keyof typeof DIRECTIONS)[];
 
 function generateGradientStops(
 	coordinates: Array<{ x: number; y: number }>,
@@ -49,9 +39,21 @@ function generateGradientStops(
 		.join(', ');
 }
 
+function makeGradientUtility(
+	cssDirection: string,
+	gradientStops: string,
+): Record<string, string | Record<string, string>> {
+	return {
+		'background-image': `linear-gradient(${cssDirection}, var(--tw-gradient-from), var(--tw-gradient-to, transparent))`,
+		'@supports (color: oklch(from red l c h))': {
+			'background-image': `linear-gradient(${cssDirection}, ${gradientStops})`,
+		},
+	};
+}
+
 const easingGradients: TailwindPlugin = plugin.withOptions<PluginOptions>(
 	(options = {}) =>
-		({ addUtilities }) => {
+		({ addUtilities, matchUtilities }) => {
 			const stops = options.stops ?? 15;
 			const utilities: Record<
 				string,
@@ -59,25 +61,31 @@ const easingGradients: TailwindPlugin = plugin.withOptions<PluginOptions>(
 			> = {};
 
 			for (const easing of EASINGS) {
-				for (const dir of DIRECTIONS_KEYS) {
-					const className =
-						easing === 'ease'
-							? `.bg-ease-to-${dir}`
-							: `.bg-${easing}-to-${dir}`;
-					const gradientStops = generateGradientStops(
-						getCoordinates(easing, stops),
-					);
+				const gradientStops = generateGradientStops(
+					getCoordinates(easing, stops),
+				);
 
-						utilities[className] = {
-						'background-image': `linear-gradient(${DIRECTIONS[dir]}, var(--tw-gradient-from), var(--tw-gradient-to, transparent))`,
-						'@supports (color: oklch(from red l c h))': {
-							'background-image': `linear-gradient(${DIRECTIONS[dir]}, ${gradientStops})`,
-						},
-					};
+				for (const dir of DIRECTION_KEYS) {
+					utilities[`.bg-${easing}-to-${dir}`] =
+						makeGradientUtility(DIRECTIONS[dir], gradientStops);
 				}
 			}
 
 			addUtilities(utilities);
+
+			// Custom bezier via arbitrary values: bg-ease-to-r-[0.22,1,0.36,1]
+			const matchers: Record<string, (value: string) => Record<string, string | Record<string, string>> | {}> = {};
+
+			for (const dir of DIRECTION_KEYS) {
+				matchers[`bg-ease-to-${dir}`] = (value: string) => {
+					const points = parseBezierValues(value);
+					if (!points) return {};
+					const coords = getCoordinatesFromControlPoints(points, stops);
+					return makeGradientUtility(DIRECTIONS[dir], generateGradientStops(coords));
+				};
+			}
+
+			matchUtilities(matchers, { values: {}, type: 'any' });
 		},
 );
 

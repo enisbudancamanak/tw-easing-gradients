@@ -125,6 +125,17 @@ Skip `to-*` and the plugin fades to transparent automatically.
 </TabItem>
 </Tabs>
 
+## Custom Bezier
+
+Use arbitrary values to define your own easing curve with four control points:
+
+```html
+<div class="bg-ease-to-r-[0.22,1,0.36,1] from-black"></div>
+<div class="bg-ease-to-b-[0.68,0,0.27,1.55] from-indigo-500 to-cyan-500"></div>
+```
+
+The four values correspond to the control points of a cubic bezier curve: `x1, y1, x2, y2`.
+
 ## Next Steps
 
 <CardGrid cols={2}>

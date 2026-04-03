@@ -7,7 +7,6 @@ let cacheTimestamp = 0;
 export const load = async ({ fetch }) => {
 	const now = Date.now();
 
-	// Cache noch gültig?
 	if (cachedStars !== null && now - cacheTimestamp < CACHE_DURATION) {
 		return { stars: cachedStars };
 	}
@@ -24,10 +23,11 @@ export const load = async ({ fetch }) => {
 			const data = await res.json();
 			cachedStars = data.stargazers_count;
 			cacheTimestamp = now;
-			return { stars: cachedStars };
+		} else {
+			console.warn(`GitHub API ${res.status}: ${res.statusText}`);
 		}
-	} catch {
-		// Silently fail
+	} catch (err) {
+		console.warn('GitHub API fetch failed:', err);
 	}
 
 	return { stars: cachedStars };

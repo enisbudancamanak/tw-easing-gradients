@@ -34,6 +34,7 @@ A common use case: text overlays on images. The linear gradient stays solid and 
 - **oklch color space** - Colors blend naturally without getting gray or muddy in the middle
 - **Multiple easing functions** - ease, ease-in, ease-out, ease-in-out
 - **All directions** - 8 gradient directions supported
+- **Custom bezier** - Arbitrary easing curves via `bg-ease-to-r-[0.22,1,0.36,1]`
 - **Works with Tailwind colors** - Uses existing `from-*` and `to-*` utilities
 - **Zero runtime JS** - Pure CSS output
 

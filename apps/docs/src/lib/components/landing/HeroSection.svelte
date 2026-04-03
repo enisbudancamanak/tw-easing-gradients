@@ -42,7 +42,7 @@
 				class="text-muted-foreground mt-6 max-w-xl text-lg leading-relaxed text-balance"
 			>
 				Linear gradients produce hard color transitions. Fix them with easing
-				functions, directly in your utility classes.
+				functions or custom bezier curves, directly in your utility classes.
 			</p>
 
 			<div class="mt-10">

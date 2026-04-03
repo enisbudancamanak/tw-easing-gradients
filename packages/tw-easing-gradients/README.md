@@ -15,7 +15,7 @@
 <div align="center">
   <strong>Smooth, naturally blending gradients for Tailwind CSS</strong>
   <br />
-  <sub>Cubic bezier easing • oklch color interpolation • Drop-in replacement</sub>
+  <sub>Cubic bezier easing • Custom curves • oklch color interpolation • Drop-in replacement</sub>
 </div>
 
 ---
@@ -68,6 +68,15 @@ npm install tw-easing-gradients
 
 `to-t` · `to-r` · `to-b` · `to-l` · `to-tl` · `to-tr` · `to-bl` · `to-br`
 
+## Custom Bezier
+
+Use arbitrary values for custom easing curves:
+
+```html
+<div class="bg-ease-to-r-[0.22,1,0.36,1] from-black"></div>
+<div class="bg-ease-to-b-[0.42,0,0.58,1] from-violet-600 to-pink-500"></div>
+```
+
 ## Documentation
 
 [tw-easing-gradients.enisdev.com/docs](https://tw-easing-gradients.enisdev.com/docs)
@@ -86,7 +95,7 @@ A [SKILL.md](https://github.com/enisbudancamanak/tw-easing-gradients/tree/main/.
 
 ## Roadmap
 
-- [ ] Custom bezier functions
+- [x] Custom bezier functions
 - [ ] Radial gradients
 - [ ] Conic gradients
 
