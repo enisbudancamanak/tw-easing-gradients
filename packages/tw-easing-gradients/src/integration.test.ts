@@ -3,6 +3,7 @@ import { compile } from 'tailwindcss';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, resolve, join } from 'path';
+import { DIRECTIONS } from './types.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -49,7 +50,7 @@ async function compileWithPlugin(
 }
 
 describe('Tailwind CSS Integration', () => {
-	it('generates CSS when plugin is used in real Tailwind config', async () => {
+	it('generates CSS for linear gradient utilities', async () => {
 		const css = await compileWithPlugin(['bg-ease-to-r', 'bg-ease-in-to-b']);
 
 		expect(css).toContain('.bg-ease-to-r');
@@ -57,7 +58,6 @@ describe('Tailwind CSS Integration', () => {
 		expect(css).toContain('linear-gradient');
 		expect(css).toContain('to right');
 		expect(css).toContain('to bottom');
-		// @supports Block für erweiterte Version
 		expect(css).toContain('@supports (color: oklch(from red l c h))');
 		expect(css).toContain('color-mix');
 		expect(css).toContain('oklch');
@@ -65,42 +65,14 @@ describe('Tailwind CSS Integration', () => {
 
 	it('generates all 32 utility classes', async () => {
 		const allClasses = [
-			// ease
-			'bg-ease-to-t',
-			'bg-ease-to-r',
-			'bg-ease-to-b',
-			'bg-ease-to-l',
-			'bg-ease-to-tl',
-			'bg-ease-to-tr',
-			'bg-ease-to-bl',
-			'bg-ease-to-br',
-			// ease-in
-			'bg-ease-in-to-t',
-			'bg-ease-in-to-r',
-			'bg-ease-in-to-b',
-			'bg-ease-in-to-l',
-			'bg-ease-in-to-tl',
-			'bg-ease-in-to-tr',
-			'bg-ease-in-to-bl',
-			'bg-ease-in-to-br',
-			// ease-out
-			'bg-ease-out-to-t',
-			'bg-ease-out-to-r',
-			'bg-ease-out-to-b',
-			'bg-ease-out-to-l',
-			'bg-ease-out-to-tl',
-			'bg-ease-out-to-tr',
-			'bg-ease-out-to-bl',
-			'bg-ease-out-to-br',
-			// ease-in-out
-			'bg-ease-in-out-to-t',
-			'bg-ease-in-out-to-r',
-			'bg-ease-in-out-to-b',
-			'bg-ease-in-out-to-l',
-			'bg-ease-in-out-to-tl',
-			'bg-ease-in-out-to-tr',
-			'bg-ease-in-out-to-bl',
-			'bg-ease-in-out-to-br',
+			'bg-ease-to-t', 'bg-ease-to-r', 'bg-ease-to-b', 'bg-ease-to-l',
+			'bg-ease-to-tl', 'bg-ease-to-tr', 'bg-ease-to-bl', 'bg-ease-to-br',
+			'bg-ease-in-to-t', 'bg-ease-in-to-r', 'bg-ease-in-to-b', 'bg-ease-in-to-l',
+			'bg-ease-in-to-tl', 'bg-ease-in-to-tr', 'bg-ease-in-to-bl', 'bg-ease-in-to-br',
+			'bg-ease-out-to-t', 'bg-ease-out-to-r', 'bg-ease-out-to-b', 'bg-ease-out-to-l',
+			'bg-ease-out-to-tl', 'bg-ease-out-to-tr', 'bg-ease-out-to-bl', 'bg-ease-out-to-br',
+			'bg-ease-in-out-to-t', 'bg-ease-in-out-to-r', 'bg-ease-in-out-to-b', 'bg-ease-in-out-to-l',
+			'bg-ease-in-out-to-tl', 'bg-ease-in-out-to-tr', 'bg-ease-in-out-to-bl', 'bg-ease-in-out-to-br',
 		];
 
 		const css = await compileWithPlugin(allClasses);
@@ -113,33 +85,17 @@ describe('Tailwind CSS Integration', () => {
 	it('uses default 15 stops producing exact gradient positions', async () => {
 		const css = await compileWithPlugin(['bg-ease-to-r']);
 
-		// Die erweiterte Version ist im @supports Block
 		expect(css).toContain('@supports (color: oklch(from red l c h))');
 
 		const expectedPositions = [
-			'0%',
-			'4.7%',
-			'8.9%',
-			'12.8%',
-			'16.6%',
-			'20.4%',
-			'24.4%',
-			'28.8%',
-			'33.8%',
-			'39.6%',
-			'46.3%',
-			'54.1%',
-			'63.2%',
-			'73.8%',
-			'86%',
-			'100%',
+			'0%', '4.7%', '8.9%', '12.8%', '16.6%', '20.4%', '24.4%', '28.8%',
+			'33.8%', '39.6%', '46.3%', '54.1%', '63.2%', '73.8%', '86%', '100%',
 		];
 
 		for (const position of expectedPositions) {
 			expect(css).toContain(position);
 		}
 
-		// color-mix ist im nested @supports Block
 		const colorMixCount = (css.match(/color-mix/g) || []).length;
 		expect(colorMixCount).toBeGreaterThanOrEqual(15);
 	});
@@ -147,8 +103,6 @@ describe('Tailwind CSS Integration', () => {
 	it('generates simple 2-stop fallback as base property', async () => {
 		const css = await compileWithPlugin(['bg-ease-to-r']);
 
-		// Der Fallback ist die erste background-image Property in der Regel
-		// Format: .bg-ease-to-r { background-image: linear-gradient(...simple...); @supports...}
 		const ruleMatch = css.match(
 			/\.bg-ease-to-r\s*\{\s*background-image:\s*([^;]+);/,
 		);
@@ -157,7 +111,6 @@ describe('Tailwind CSS Integration', () => {
 		expect(fallbackValue).toContain('linear-gradient');
 		expect(fallbackValue).toContain('var(--tw-gradient-from)');
 		expect(fallbackValue).toContain('var(--tw-gradient-to');
-		// Fallback sollte KEIN oklch oder color-mix enthalten
 		expect(fallbackValue).not.toContain('oklch');
 		expect(fallbackValue).not.toContain('color-mix');
 	});
@@ -173,18 +126,7 @@ describe('Tailwind CSS Integration', () => {
 	});
 
 	it('generates correct gradient directions', async () => {
-		const directionMap = {
-			t: 'to top',
-			r: 'to right',
-			b: 'to bottom',
-			l: 'to left',
-			tl: 'to top left',
-			tr: 'to top right',
-			bl: 'to bottom left',
-			br: 'to bottom right',
-		};
-
-		for (const [dir, expected] of Object.entries(directionMap)) {
+		for (const [dir, expected] of Object.entries(DIRECTIONS)) {
 			const css = await compileWithPlugin([`bg-ease-to-${dir}`]);
 			expect(css).toContain(`linear-gradient(${expected},`);
 		}
@@ -209,7 +151,6 @@ describe('Tailwind CSS Integration', () => {
 		expect(css).toContain('linear-gradient');
 		expect(css).toContain('@supports (color: oklch(from red l c h))');
 
-		// Mit 5 Stops sollten weniger color-mix Aufrufe sein als mit 15
 		const colorMixCount = (css.match(/color-mix/g) || []).length;
 		expect(colorMixCount).toBeGreaterThanOrEqual(4);
 		expect(colorMixCount).toBeLessThan(14);
@@ -222,4 +163,16 @@ describe('Tailwind CSS Integration', () => {
 		expect(css1).toBe(css2);
 	});
 
+	describe('custom bezier arbitrary values', () => {
+		it('generates CSS for custom bezier gradient', async () => {
+			const css = await compileWithPlugin([
+				'bg-ease-to-r-[0.22,1,0.36,1]',
+			]);
+
+			expect(css).toContain('linear-gradient');
+			expect(css).toContain('to right');
+			expect(css).toContain('@supports (color: oklch(from red l c h))');
+			expect(css).toContain('color-mix');
+		});
+	});
 });

@@ -10,9 +10,11 @@ interface PluginOptions {
     stops?: number;
 }
 
+declare function getCoordinatesFromControlPoints(controlPoints: readonly [number, number, number, number], stops?: number): Coordinate[];
 declare function getCoordinates(easing: EasingFunction, stops?: number): Coordinate[];
+declare function parseBezierValues(input: string): [number, number, number, number] | null;
 
 type TailwindPlugin = ReturnType<typeof plugin.withOptions<PluginOptions>>;
 declare const easingGradients: TailwindPlugin;
 
-export { type Coordinate, type Direction, type EasingFunction, type PluginOptions, easingGradients as default, getCoordinates };
+export { type Coordinate, type Direction, type EasingFunction, type PluginOptions, easingGradients as default, getCoordinates, getCoordinatesFromControlPoints, parseBezierValues };

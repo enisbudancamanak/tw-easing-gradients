@@ -12,14 +12,18 @@
 		<div class="relative">
 			{#if variant === 'brand'}
 				<div
-					class="ring-border before:from-brand after:from-brand relative flex aspect-4/3 items-center justify-center overflow-hidden rounded-xl bg-white ring-1 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-1/3 before:bg-linear-to-b before:to-transparent before:content-[''] after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:z-10 after:h-1/3 after:bg-linear-to-t after:to-transparent after:content-['']"
+					class="ring-border relative flex aspect-4/3 items-center justify-center overflow-hidden rounded-xl bg-white ring-1"
 				>
+					<div class="from-brand pointer-events-none absolute inset-x-0 top-0 z-10 h-1/3 bg-linear-to-b to-transparent"></div>
+					<div class="from-brand pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/3 bg-linear-to-t to-transparent"></div>
 					<span class="text-brand relative z-20 font-medium">tailwind</span>
 				</div>
 			{:else}
 				<div
-					class="ring-border relative flex aspect-4/3 items-center justify-center overflow-hidden rounded-xl bg-white ring-1 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-1/3 before:bg-linear-to-b before:from-black before:to-transparent before:content-[''] after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:z-10 after:h-1/3 after:bg-linear-to-t after:from-black after:to-transparent after:content-['']"
+					class="ring-border relative flex aspect-4/3 items-center justify-center overflow-hidden rounded-xl bg-white ring-1"
 				>
+					<div class="pointer-events-none absolute inset-x-0 top-0 z-10 h-1/3 bg-linear-to-b from-black to-transparent"></div>
+					<div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/3 bg-linear-to-t from-black to-transparent"></div>
 					<span class="relative z-20 font-medium text-black">tailwind</span>
 				</div>
 			{/if}
@@ -29,16 +33,20 @@
 		<div class="relative">
 			{#if variant === 'brand'}
 				<div
-					class="ring-brand before:bg-ease-in-out-to-b after:bg-ease-in-out-to-t before:from-brand after:from-brand relative flex aspect-4/3 items-center justify-center overflow-hidden rounded-xl bg-white ring-1 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-1/3 before:to-transparent before:content-[''] after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:z-10 after:h-1/3 after:to-transparent after:content-['']"
+					class="ring-brand relative flex aspect-4/3 items-center justify-center overflow-hidden rounded-xl bg-white ring-1"
 				>
+					<div class="from-brand pointer-events-none absolute inset-x-0 top-0 z-10 h-1/3 bg-ease-in-out-to-b to-transparent"></div>
+					<div class="from-brand pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/3 bg-ease-in-out-to-t to-transparent"></div>
 					<span class="text-brand relative z-20 font-medium">
 						tw-easing-gradients
 					</span>
 				</div>
 			{:else}
 				<div
-					class="ring-border before:bg-ease-to-b after:bg-ease-to-t relative flex aspect-4/3 items-center justify-center overflow-hidden rounded-xl bg-white ring-1 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-1/3 before:from-black before:to-transparent before:content-[''] after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:z-10 after:h-1/3 after:from-black after:to-transparent after:content-['']"
+					class="ring-border relative flex aspect-4/3 items-center justify-center overflow-hidden rounded-xl bg-white ring-1"
 				>
+					<div class="pointer-events-none absolute inset-x-0 top-0 z-10 h-1/3 bg-ease-to-b from-black to-transparent"></div>
+					<div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/3 bg-ease-to-t from-black to-transparent"></div>
 					<span class="relative z-20 font-medium text-black">
 						tw-easing-gradients
 					</span>

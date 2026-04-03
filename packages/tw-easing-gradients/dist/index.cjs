@@ -31,7 +31,9 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var index_exports = {};
 __export(index_exports, {
   default: () => index_default,
-  getCoordinates: () => getCoordinates
+  getCoordinates: () => getCoordinates,
+  getCoordinatesFromControlPoints: () => getCoordinatesFromControlPoints,
+  parseBezierValues: () => parseBezierValues
 });
 module.exports = __toCommonJS(index_exports);
 var import_plugin = __toESM(require("tailwindcss/plugin"), 1);
@@ -59,16 +61,11 @@ function cubicBezier(t, p1, p2) {
   const mt = 1 - t;
   return 3 * mt * mt * t * p1 + 3 * mt * t * t * p2 + t * t * t;
 }
-function getCoordinates(easing, stops = 15) {
-  if (!(easing in EASING_FUNCTIONS)) {
-    throw new Error(
-      `Invalid easing: "${easing}". Valid options: ease, ease-in, ease-out, ease-in-out`
-    );
-  }
+function getCoordinatesFromControlPoints(controlPoints, stops = 15) {
   if (stops < 2 || stops > 100) {
     throw new Error(`stops must be between 2 and 100, got: ${stops}`);
   }
-  const [x1, y1, x2, y2] = EASING_FUNCTIONS[easing];
+  const [x1, y1, x2, y2] = controlPoints;
   const coords = [];
   for (let i = 0; i <= stops; i++) {
     const t = i / stops;
@@ -76,24 +73,24 @@ function getCoordinates(easing, stops = 15) {
   }
   return coords;
 }
+function getCoordinates(easing, stops = 15) {
+  if (!(easing in EASING_FUNCTIONS)) {
+    throw new Error(
+      `Invalid easing: "${easing}". Valid options: ease, ease-in, ease-out, ease-in-out`
+    );
+  }
+  return getCoordinatesFromControlPoints(EASING_FUNCTIONS[easing], stops);
+}
+function parseBezierValues(input) {
+  const cleaned = input.replace(/^cubic-bezier\(/i, "").replace(/\)$/, "").trim();
+  const parts = cleaned.split(",").map((s) => Number(s.trim()));
+  if (parts.length !== 4 || parts.some(Number.isNaN)) return null;
+  return parts;
+}
 
 // src/index.ts
-var EASINGS = [
-  "ease",
-  "ease-in",
-  "ease-out",
-  "ease-in-out"
-];
-var DIRECTIONS_KEYS = [
-  "t",
-  "r",
-  "b",
-  "l",
-  "tl",
-  "tr",
-  "bl",
-  "br"
-];
+var EASINGS = Object.keys(EASING_FUNCTIONS);
+var DIRECTION_KEYS = Object.keys(DIRECTIONS);
 function generateGradientStops(coordinates) {
   return coordinates.map(({ x, y }) => {
     const position = Math.round(x * 1e3) / 10;
@@ -107,29 +104,43 @@ function generateGradientStops(coordinates) {
     return `oklch(from color-mix(in oklch, var(--tw-gradient-to, oklch(from var(--tw-gradient-from) l c h / 0)) ${percentage}%, var(--tw-gradient-from)) l c h / alpha) ${position}%`;
   }).join(", ");
 }
+function makeGradientUtility(cssDirection, gradientStops) {
+  return {
+    "background-image": `linear-gradient(${cssDirection}, var(--tw-gradient-from), var(--tw-gradient-to, transparent))`,
+    "@supports (color: oklch(from red l c h))": {
+      "background-image": `linear-gradient(${cssDirection}, ${gradientStops})`
+    }
+  };
+}
 var easingGradients = import_plugin.default.withOptions(
-  (options = {}) => ({ addUtilities }) => {
+  (options = {}) => ({ addUtilities, matchUtilities }) => {
     const stops = options.stops ?? 15;
     const utilities = {};
     for (const easing of EASINGS) {
-      for (const dir of DIRECTIONS_KEYS) {
-        const className = easing === "ease" ? `.bg-ease-to-${dir}` : `.bg-${easing}-to-${dir}`;
-        const gradientStops = generateGradientStops(
-          getCoordinates(easing, stops)
-        );
-        utilities[className] = {
-          "background-image": `linear-gradient(${DIRECTIONS[dir]}, var(--tw-gradient-from), var(--tw-gradient-to, transparent))`,
-          "@supports (color: oklch(from red l c h))": {
-            "background-image": `linear-gradient(${DIRECTIONS[dir]}, ${gradientStops})`
-          }
-        };
+      const gradientStops = generateGradientStops(
+        getCoordinates(easing, stops)
+      );
+      for (const dir of DIRECTION_KEYS) {
+        utilities[`.bg-${easing}-to-${dir}`] = makeGradientUtility(DIRECTIONS[dir], gradientStops);
       }
     }
     addUtilities(utilities);
+    const matchers = {};
+    for (const dir of DIRECTION_KEYS) {
+      matchers[`bg-ease-to-${dir}`] = (value) => {
+        const points = parseBezierValues(value);
+        if (!points) return {};
+        const coords = getCoordinatesFromControlPoints(points, stops);
+        return makeGradientUtility(DIRECTIONS[dir], generateGradientStops(coords));
+      };
+    }
+    matchUtilities(matchers, { values: {}, type: "any" });
   }
 );
 var index_default = easingGradients;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  getCoordinates
+  getCoordinates,
+  getCoordinatesFromControlPoints,
+  parseBezierValues
 });

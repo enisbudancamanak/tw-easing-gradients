@@ -61,6 +61,14 @@ Use the utilities together with Tailwind's `from-*` and `to-*` color utilities:
 </div>
 ```
 
+You can also use custom easing curves with arbitrary values:
+
+```html
+<div class="bg-ease-to-r-[0.22,1,0.36,1] from-black to-transparent">
+	<!-- Custom cubic bezier easing -->
+</div>
+```
+
 </Steps>
 
 <Callout type="note" title="Requirements">

@@ -2,7 +2,8 @@
 	import { Label, Separator, Select } from '@svecodocs/kit';
 	import ColorPicker, { ChromeVariant } from 'svelte-awesome-color-picker';
 	import CopyButton from '$lib/components/CopyButton.svelte';
-	import { BRAND_COLORS } from '$lib/constants';
+	import { BRAND_COLORS, EASING_CURVES, DIRECTION_CSS, COLOR_PRESETS, type BezierCurve } from '$lib/constants';
+	import { buildGradientStyle, hexToArbitrary, curveToSvgPath } from '$lib/gradient-utils';
 	import ArrowUp from 'phosphor-svelte/lib/ArrowUp';
 	import ArrowDown from 'phosphor-svelte/lib/ArrowDown';
 	import ArrowLeft from 'phosphor-svelte/lib/ArrowLeft';
@@ -12,130 +13,84 @@
 	import ArrowDownLeft from 'phosphor-svelte/lib/ArrowDownLeft';
 	import ArrowDownRight from 'phosphor-svelte/lib/ArrowDownRight';
 
+	const EASINGS = [
+		{ value: 'ease', label: 'Ease' },
+		{ value: 'ease-in', label: 'Ease In' },
+		{ value: 'ease-out', label: 'Ease Out' },
+		{ value: 'ease-in-out', label: 'Ease In Out' },
+		{ value: 'custom', label: 'Custom' }
+	];
+
+	const DIRECTIONS = [
+		{ value: 't', label: 'Top', icon: ArrowUp },
+		{ value: 'r', label: 'Right', icon: ArrowRight },
+		{ value: 'b', label: 'Bottom', icon: ArrowDown },
+		{ value: 'l', label: 'Left', icon: ArrowLeft },
+		{ value: 'tl', label: 'Top Left', icon: ArrowUpLeft },
+		{ value: 'tr', label: 'Top Right', icon: ArrowUpRight },
+		{ value: 'bl', label: 'Bottom Left', icon: ArrowDownLeft },
+		{ value: 'br', label: 'Bottom Right', icon: ArrowDownRight }
+	];
+
 	let fromHex = $state(BRAND_COLORS.from);
 	let toHex = $state(BRAND_COLORS.to);
 	let easing = $state('ease-in-out');
 	let direction = $state('r');
+	let customCurve = $state<BezierCurve>([0.35, 0, 0.2, 1]);
+	let activeHandle = $state<1 | 2 | null>(null);
 
-	function hexToArbitrary(hex: string): string {
-		if (hex.length === 9) {
-			const color = hex.slice(0, 7);
-			const alpha = Math.round((parseInt(hex.slice(7, 9), 16) / 255) * 100);
-			if (alpha === 100) return `[${color}]`;
-			return `[${color}/${alpha}]`;
-		}
-		return `[${hex}]`;
-	}
-
-	let fromColor = $derived(hexToArbitrary(fromHex));
-	let toColor = $derived(hexToArbitrary(toHex));
-
-	const easingCurves: Record<string, [number, number, number, number]> = {
-		ease: [0.25, 0.1, 0.25, 1],
-		'ease-in': [0.42, 0, 1, 1],
-		'ease-out': [0, 0, 0.58, 1],
-		'ease-in-out': [0.42, 0, 0.58, 1]
-	};
-
-	let currentCurve = $derived(easingCurves[easing]);
-
-	let curvePath = $derived.by(() => {
-		const [x1, y1, x2, y2] = currentCurve;
-		const w = 120,
-			h = 70,
-			pad = 12;
-		const sx = pad,
-			sy = h - pad,
-			ex = w - pad,
-			ey = pad;
-		return `M ${sx} ${sy} C ${sx + x1 * (ex - sx)} ${sy - y1 * (sy - ey)}, ${sx + x2 * (ex - sx)} ${sy - y2 * (sy - ey)}, ${ex} ${ey}`;
-	});
+	let isCustom = $derived(easing === 'custom');
+	let currentCurve = $derived(isCustom ? customCurve : EASING_CURVES[easing]);
 
 	let className = $derived(
-		easing === 'ease'
-			? `bg-ease-to-${direction}`
+		isCustom
+			? `bg-ease-to-${direction}-[${customCurve.join(',')}]`
 			: `bg-${easing}-to-${direction}`
 	);
 
-	let fullClass = $derived(`${className} from-${fromColor} to-${toColor}`);
-
-	const easings = [
-		{ value: 'ease', label: 'Ease' },
-		{ value: 'ease-in', label: 'Ease In' },
-		{ value: 'ease-out', label: 'Ease Out' },
-		{ value: 'ease-in-out', label: 'Ease In Out' }
-	];
-
-	let easingLabel = $derived(
-		easings.find((e) => e.value === easing)?.label ?? 'Select easing'
+	let fullClass = $derived(
+		`${className} from-${hexToArbitrary(fromHex)} to-${hexToArbitrary(toHex)}`
 	);
 
-	const directionIcons = {
-		t: ArrowUp,
-		r: ArrowRight,
-		b: ArrowDown,
-		l: ArrowLeft,
-		tl: ArrowUpLeft,
-		tr: ArrowUpRight,
-		bl: ArrowDownLeft,
-		br: ArrowDownRight
-	};
+	let previewClass = $derived(isCustom ? '' : `bg-${easing}-to-${direction}`);
+	let customStyle = $derived(isCustom ? buildGradientStyle(customCurve, direction) : '');
 
-	const directions = [
-		{ value: 't', label: 'Top' },
-		{ value: 'r', label: 'Right' },
-		{ value: 'b', label: 'Bottom' },
-		{ value: 'l', label: 'Left' },
-		{ value: 'tl', label: 'Top Left' },
-		{ value: 'tr', label: 'Top Right' },
-		{ value: 'bl', label: 'Bottom Left' },
-		{ value: 'br', label: 'Bottom Right' }
-	];
+	const PLOT_SIZE = 220;
+	let svgPath = $derived(curveToSvgPath(currentCurve, PLOT_SIZE));
 
-	const presets = [
-		{
-			from: 'indigo-500',
-			to: 'cyan-500',
-			fromHex: BRAND_COLORS.from,
-			toHex: BRAND_COLORS.to,
-			label: 'Indigo → Cyan'
-		},
-		{
-			from: 'violet-500',
-			to: 'pink-500',
-			fromHex: '#8b5cf6',
-			toHex: '#ec4899',
-			label: 'Violet → Pink'
-		},
-		{
-			from: 'emerald-500',
-			to: 'blue-500',
-			fromHex: '#10b981',
-			toHex: '#3b82f6',
-			label: 'Emerald → Blue'
-		},
-		{
-			from: 'amber-500',
-			to: 'red-500',
-			fromHex: '#f59e0b',
-			toHex: '#ef4444',
-			label: 'Amber → Red'
-		},
-		{
-			from: 'black',
-			to: 'white',
-			fromHex: '#000000',
-			toHex: '#ffffff',
-			label: 'Black → White'
-		},
-		{
-			from: 'rose-500',
-			to: 'orange-400',
-			fromHex: '#f43f5e',
-			toHex: '#fb923c',
-			label: 'Rose → Orange'
+	let handle1 = $derived({
+		cx: currentCurve[0] * PLOT_SIZE,
+		cy: PLOT_SIZE - currentCurve[1] * PLOT_SIZE
+	});
+
+	let handle2 = $derived({
+		cx: currentCurve[2] * PLOT_SIZE,
+		cy: PLOT_SIZE - currentCurve[3] * PLOT_SIZE
+	});
+
+	function switchToCustom() {
+		if (!isCustom) {
+			customCurve = [...currentCurve] as BezierCurve;
+			easing = 'custom';
 		}
-	];
+	}
+
+	function clamp(v: number, min: number, max: number) {
+		return Math.min(max, Math.max(min, v));
+	}
+
+	function updateHandle(event: PointerEvent, handle: 1 | 2) {
+		const svg = event.currentTarget as SVGSVGElement;
+		const rect = svg.getBoundingClientRect();
+		const nx = Number(clamp((event.clientX - rect.left) / rect.width, 0, 1).toFixed(2));
+		const ny = Number(clamp(1 - (event.clientY - rect.top) / rect.height, 0, 1).toFixed(2));
+
+		if (handle === 1) {
+			customCurve = [nx, ny, customCurve[2], customCurve[3]];
+		} else {
+			customCurve = [customCurve[0], customCurve[1], nx, ny];
+		}
+	}
 </script>
 
 <svelte:head>
@@ -143,12 +98,9 @@
 </svelte:head>
 
 <div class="mx-auto w-full max-w-[640px] space-y-6 2xl:max-w-[760px]">
-	<!-- Page Header -->
 	<div>
 		<h1 class="scroll-m-20 text-[30px] font-semibold">Playground</h1>
-		<p
-			class="text-muted-foreground mt-3 text-[18px] leading-7 tracking-[-0.01em] text-balance"
-		>
+		<p class="text-muted-foreground mt-3 text-[18px] leading-7 tracking-[-0.01em] text-balance">
 			Build and preview easing gradients interactively.
 		</p>
 		<Separator class="mt-6" />
@@ -156,19 +108,16 @@
 
 	<!-- Preview -->
 	<div
-		class="border-border relative h-48 w-full rounded-xl border shadow-2xl sm:h-64 {className}"
-		style="--tw-gradient-from: {fromHex}; --tw-gradient-to: {toHex};"
+		class="border-border relative h-48 w-full rounded-xl border shadow-2xl sm:h-64 {previewClass}"
+		style="--tw-gradient-from: {fromHex}; --tw-gradient-to: {toHex}; {customStyle}"
 	>
 		<div class="absolute inset-0 flex items-end p-4">
-			<code
-				class="rounded bg-black/20 px-2 py-1 font-mono text-sm text-white/60 backdrop-blur-sm"
-			>
+			<code class="rounded bg-black/20 px-2 py-1 font-mono text-sm text-white/60 backdrop-blur-sm">
 				{className}
 			</code>
 		</div>
 	</div>
 
-	<!-- Controls: Colors left, Options right -->
 	<div class="grid gap-6 sm:grid-cols-2">
 		<!-- Colors -->
 		<div class="border-border bg-card space-y-4 rounded-xl border p-5">
@@ -176,20 +125,11 @@
 
 			<div class="space-y-3">
 				<div class="flex items-center justify-between">
-					<Label class="text-muted-foreground text-xs tracking-wider uppercase">
-						From
-					</Label>
+					<Label class="text-muted-foreground text-xs tracking-wider uppercase">From</Label>
 					<code class="text-muted-foreground font-mono text-xs">{fromHex}</code>
 				</div>
 				<div class="color-picker-wrapper">
-					<ColorPicker
-						bind:hex={fromHex}
-						components={ChromeVariant}
-						sliderDirection="horizontal"
-						isAlpha
-						--picker-width="100%"
-						--picker-height="100px"
-					/>
+					<ColorPicker bind:hex={fromHex} components={ChromeVariant} sliderDirection="horizontal" isAlpha --picker-width="100%" --picker-height="100px" />
 				</div>
 			</div>
 
@@ -197,45 +137,29 @@
 
 			<div class="space-y-3">
 				<div class="flex items-center justify-between">
-					<Label class="text-muted-foreground text-xs tracking-wider uppercase">
-						To
-					</Label>
+					<Label class="text-muted-foreground text-xs tracking-wider uppercase">To</Label>
 					<code class="text-muted-foreground font-mono text-xs">{toHex}</code>
 				</div>
 				<div class="color-picker-wrapper">
-					<ColorPicker
-						bind:hex={toHex}
-						components={ChromeVariant}
-						sliderDirection="horizontal"
-						isAlpha
-						--picker-width="100%"
-						--picker-height="100px"
-					/>
+					<ColorPicker bind:hex={toHex} components={ChromeVariant} sliderDirection="horizontal" isAlpha --picker-width="100%" --picker-height="100px" />
 				</div>
 			</div>
 
 			<Separator />
 
 			<div class="space-y-2">
-				<Label class="text-muted-foreground text-xs tracking-wider uppercase">
-					Presets
-				</Label>
+				<Label class="text-muted-foreground text-xs tracking-wider uppercase">Presets</Label>
 				<div class="grid grid-cols-2 gap-1.5">
-					{#each presets as preset (preset.label)}
+					{#each COLOR_PRESETS as preset (preset.label)}
 						<button
-							onclick={() => {
-								fromHex = preset.fromHex;
-								toHex = preset.toHex;
-							}}
+							onclick={() => { fromHex = preset.fromHex; toHex = preset.toHex; }}
 							class="group border-border hover:bg-accent flex items-center gap-2 rounded-lg border p-1.5 transition-all"
 						>
 							<div
 								class="ring-border/50 h-6 w-6 shrink-0 rounded ring-1 ring-inset"
 								style="background: linear-gradient(135deg, {preset.fromHex}, {preset.toHex});"
 							></div>
-							<span
-								class="text-muted-foreground group-hover:text-foreground truncate text-[11px] transition-colors"
-							>
+							<span class="text-muted-foreground group-hover:text-foreground truncate text-[11px] transition-colors">
 								{preset.label}
 							</span>
 						</button>
@@ -249,114 +173,71 @@
 			<h3 class="text-foreground text-sm font-semibold">Options</h3>
 
 			<div class="space-y-2">
-				<Label class="text-muted-foreground text-xs tracking-wider uppercase">
-					Easing
-				</Label>
+				<Label class="text-muted-foreground text-xs tracking-wider uppercase">Easing</Label>
 				<Select.Root type="single" bind:value={easing}>
 					<Select.Trigger class="h-9 w-full">
-						{easingLabel}
+						{EASINGS.find((e) => e.value === easing)?.label ?? 'Select'}
 					</Select.Trigger>
 					<Select.Content side="top">
-						{#each easings as e (e.value)}
-							<Select.Item value={e.value} label={e.label}>
-								{e.label}
-							</Select.Item>
+						{#each EASINGS as e (e.value)}
+							<Select.Item value={e.value} label={e.label}>{e.label}</Select.Item>
 						{/each}
 					</Select.Content>
 				</Select.Root>
 
-				<div
-					class="border-border bg-muted/30 flex justify-center rounded-lg border p-2"
-				>
+				<!-- Curve editor -->
+				<div class="border-border bg-muted/30 relative overflow-visible rounded-lg border p-3">
 					<svg
-						width="120"
-						height="70"
-						viewBox="0 0 120 70"
-						class="text-foreground"
+						viewBox="0 0 {PLOT_SIZE} {PLOT_SIZE}"
+						overflow="visible"
+						class="aspect-square w-full touch-none text-foreground"
+						onpointermove={(event) => { if (activeHandle) updateHandle(event, activeHandle); }}
+						onpointerup={() => (activeHandle = null)}
+						onpointercancel={() => (activeHandle = null)}
+						onpointerleave={() => (activeHandle = null)}
 					>
-						<line
-							x1="12"
-							y1="58"
-							x2="108"
-							y2="58"
-							stroke="currentColor"
-							stroke-opacity="0.1"
-							stroke-width="1"
-						/>
-						<line
-							x1="12"
-							y1="12"
-							x2="108"
-							y2="12"
-							stroke="currentColor"
-							stroke-opacity="0.1"
-							stroke-width="1"
-						/>
-						<line
-							x1="12"
-							y1="58"
-							x2="12"
-							y2="12"
-							stroke="currentColor"
-							stroke-opacity="0.1"
-							stroke-width="1"
-						/>
-						<line
-							x1="108"
-							y1="58"
-							x2="108"
-							y2="12"
-							stroke="currentColor"
-							stroke-opacity="0.1"
-							stroke-width="1"
-						/>
-						<line
-							x1="12"
-							y1="58"
-							x2="108"
-							y2="12"
-							stroke="currentColor"
-							stroke-opacity="0.08"
-							stroke-width="1"
-							stroke-dasharray="3 3"
-						/>
-						<path
-							d={curvePath}
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							class="transition-all duration-300"
-						/>
-						<circle cx="12" cy="58" r="2.5" fill="currentColor" opacity="0.4" />
-						<circle
-							cx="108"
-							cy="12"
-							r="2.5"
-							fill="currentColor"
-							opacity="0.4"
-						/>
+						<!-- Grid box -->
+						<rect x="0" y="0" width={PLOT_SIZE} height={PLOT_SIZE} fill="none" stroke="currentColor" stroke-opacity="0.1" />
+						<line x1="0" y1={PLOT_SIZE} x2={PLOT_SIZE} y2="0" stroke="currentColor" stroke-opacity="0.06" stroke-dasharray="4 4" />
+
+						<!-- Handle lines -->
+						<line x1="0" y1={PLOT_SIZE} x2={handle1.cx} y2={handle1.cy} stroke="currentColor" stroke-opacity="0.3" />
+						<line x1={PLOT_SIZE} y1="0" x2={handle2.cx} y2={handle2.cy} stroke="currentColor" stroke-opacity="0.3" />
+
+						<!-- Curve -->
+						<path d={svgPath} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class={isCustom ? '' : 'transition-all duration-300'} />
+
+						<!-- Draggable handles (drag switches to custom automatically) -->
+						{#each [[handle1, 1] as const, [handle2, 2] as const] as [handle, id] (id)}
+							<circle cx={handle.cx} cy={handle.cy} r="20" fill="transparent" class="cursor-grab active:cursor-grabbing"
+								onpointerdown={(event) => {
+									switchToCustom();
+									(event.currentTarget as SVGCircleElement).setPointerCapture(event.pointerId);
+									activeHandle = id;
+								}}
+							/>
+							<circle cx={handle.cx} cy={handle.cy} r="6" fill="currentColor" class="pointer-events-none" />
+						{/each}
+
+						<!-- Endpoints -->
+						<circle cx="0" cy={PLOT_SIZE} r="3" fill="currentColor" opacity="0.3" />
+						<circle cx={PLOT_SIZE} cy="0" r="3" fill="currentColor" opacity="0.3" />
 					</svg>
 				</div>
 			</div>
 
 			<div class="space-y-2">
-				<Label class="text-muted-foreground text-xs tracking-wider uppercase">
-					Direction
-				</Label>
+				<Label class="text-muted-foreground text-xs tracking-wider uppercase">Direction</Label>
 				<div class="grid grid-cols-4 gap-1.5">
-					{#each directions as dir (dir.value)}
-						{@const Icon =
-							directionIcons[dir.value as keyof typeof directionIcons]}
+					{#each DIRECTIONS as dir (dir.value)}
 						<button
 							onclick={() => (direction = dir.value)}
-							class="flex h-9 items-center justify-center rounded-md border transition-all duration-150 will-change-transform {direction ===
-							dir.value
+							class="flex h-9 items-center justify-center rounded-md border transition-all duration-150 will-change-transform {direction === dir.value
 								? 'border-brand bg-brand text-brand-foreground scale-105 shadow-sm'
 								: 'border-border bg-background text-muted-foreground hover:bg-accent hover:text-foreground'}"
 							title={dir.label}
 						>
-							<Icon class="size-4" />
+							<dir.icon class="size-4" />
 						</button>
 					{/each}
 				</div>
@@ -370,11 +251,8 @@
 			<h3 class="text-foreground text-sm font-semibold">Code</h3>
 			<CopyButton text={fullClass} />
 		</div>
-
 		<div class="bg-background-secondary overflow-hidden rounded-lg p-4">
-			<pre
-				class="text-muted-foreground overflow-x-auto font-mono text-sm"><code><span
-						class="text-brand">{className}</span> from-{fromColor} to-{toColor}</code></pre>
+			<pre class="text-muted-foreground overflow-x-auto font-mono text-sm"><code><span class="text-brand">{className}</span> from-{hexToArbitrary(fromHex)} to-{hexToArbitrary(toHex)}</code></pre>
 		</div>
 	</div>
 </div>

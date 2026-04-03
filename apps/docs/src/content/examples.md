@@ -31,19 +31,16 @@ Create smooth fade overlays on hero images:
 </div>
 ```
 
-## Pseudo-Element Overlays
+## Dual Overlay
 
-Apply gradients to `::before` and `::after` pseudo-elements for dual overlays:
+Top and bottom fade overlays using absolute positioned divs:
 
 <PseudoOverlay variant="black" />
 
 ```html
-<div
-	class="relative bg-white before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-1/3
-    before:bg-ease-to-b before:from-black before:to-transparent before:content-['']
-    after:absolute after:inset-x-0 after:bottom-0 after:z-10 after:h-1/3
-    after:bg-ease-to-t after:from-black after:to-transparent after:content-['']"
->
+<div class="relative bg-white">
+	<div class="absolute inset-x-0 top-0 z-10 h-1/3 bg-ease-to-b from-black to-transparent"></div>
+	<div class="absolute inset-x-0 bottom-0 z-10 h-1/3 bg-ease-to-t from-black to-transparent"></div>
 	<span class="relative z-20">Content</span>
 </div>
 ```
@@ -121,6 +118,20 @@ Animated loading placeholder with smooth gradients:
 <Callout type="warning">
 The `via-*` utility is not supported with easing gradients. Use only `from-*` and `to-*` for color stops.
 </Callout>
+
+## Custom Bezier
+
+Define your own easing curve using arbitrary values with four cubic bezier control points:
+
+```html
+<!-- Aggressive ease-out -->
+<div class="bg-ease-to-b-[0.22,1,0.36,1] from-black">
+  <img src="hero.jpg" class="w-full" />
+</div>
+
+<!-- Bouncy overshoot -->
+<div class="bg-ease-to-r-[0.68,0,0.27,1.55] from-indigo-500 to-cyan-500"></div>
+```
 
 ## Next Steps
 
