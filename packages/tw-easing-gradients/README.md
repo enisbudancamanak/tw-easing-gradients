@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/enisbudancamanak/tw-easing-gradients/main/apps/docs/static/logo-rounded.png" alt="tw-easing-gradients" width="80" height="80" />
+  <img src="https://raw.githubusercontent.com/enisbu/tw-easing-gradients/main/apps/docs/static/logo-rounded.png" alt="tw-easing-gradients" width="80" height="80" />
   <h1>tw-easing-gradients</h1>
 </div>
 
@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS v4" />
   <img src="https://img.shields.io/npm/v/tw-easing-gradients?style=flat-square&color=269BDE" alt="npm version" />
   <img src="https://img.shields.io/npm/dw/tw-easing-gradients?style=flat-square&color=4480E7" alt="npm downloads" />
-  <img src="https://img.shields.io/github/license/enisbudancamanak/tw-easing-gradients?style=flat-square&color=6366F1" alt="License" />
+  <img src="https://img.shields.io/github/license/enisbu/tw-easing-gradients?style=flat-square&color=6366F1" alt="License" />
 </div>
 
 <br />
@@ -28,7 +28,7 @@ This plugin distributes color stops along an easing curve using `color-mix()` in
 
 <br />
 <div align="center">
-  <img src="https://raw.githubusercontent.com/enisbudancamanak/tw-easing-gradients/main/apps/docs/static/og.png" alt="Comparison" width="800" />
+  <img src="https://raw.githubusercontent.com/enisbu/tw-easing-gradients/main/apps/docs/static/og.png" alt="Comparison" width="800" />
 </div>
 <br />
 
@@ -89,7 +89,7 @@ Use arbitrary values for custom easing curves:
 
 ## AI Coding Assistant
 
-A [SKILL.md](https://github.com/enisbudancamanak/tw-easing-gradients/tree/main/.claude/skills/tw-easing-gradients) is included for AI assistants (Claude Code, Codex, OpenCode) to automatically upgrade `bg-gradient-to-*` utilities.
+A [SKILL.md](https://github.com/enisbu/tw-easing-gradients/tree/main/.claude/skills/tw-easing-gradients) is included for AI assistants (Claude Code, Codex, OpenCode) to automatically upgrade `bg-gradient-to-*` utilities.
 
 ---
 
@@ -110,4 +110,4 @@ Contributions welcome! Whether it's a bug fix, feature, or documentation improve
 
 ## License
 
-tw-easing-gradients is open-source and free to use. Licensed under [MIT](https://github.com/enisbudancamanak/tw-easing-gradients/blob/main/LICENSE).
+tw-easing-gradients is open-source and free to use. Licensed under [MIT](https://github.com/enisbu/tw-easing-gradients/blob/main/LICENSE).

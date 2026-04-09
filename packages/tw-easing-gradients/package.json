@@ -1,6 +1,6 @@
 {
 	"name": "tw-easing-gradients",
-	"version": "1.1.0",
+	"version": "1.1.2",
 	"type": "module",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
@@ -43,7 +43,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/enisbudancamanak/tw-easing-gradients"
+		"url": "https://github.com/enisbu/tw-easing-gradients"
 	},
 	"author": "Enis Budancamanak",
 	"description": "Tailwind CSS v4 plugin for smooth easing gradients - eliminates hard edges in color transitions"

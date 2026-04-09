@@ -1,4 +1,4 @@
-const REPO = 'enisbudancamanak/tw-easing-gradients';
+const REPO = 'enisbu/tw-easing-gradients';
 const CACHE_DURATION = 60 * 60 * 1000;
 
 let cachedStars: number | null = null;

@@ -3,7 +3,7 @@
 		repo?: string;
 	}
 
-	let { repo = 'enisbudancamanak/tw-easing-gradients' }: Props = $props();
+	let { repo = 'enisbu/tw-easing-gradients' }: Props = $props();
 </script>
 
 <footer class="border-border border-t py-8">

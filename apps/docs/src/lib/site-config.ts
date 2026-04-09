@@ -14,9 +14,9 @@ export const siteConfig = defineSiteConfig({
 	keywords: ['tailwindcss', 'plugin', 'gradient', 'easing', 'css', 'oklch'],
 	license: {
 		name: 'MIT',
-		url: 'https://github.com/enisbudancamanak/tw-easing-gradients/blob/main/LICENSE'
+		url: 'https://github.com/enisbu/tw-easing-gradients/blob/main/LICENSE'
 	},
 	links: {
-		github: 'https://github.com/enisbudancamanak/tw-easing-gradients'
+		github: 'https://github.com/enisbu/tw-easing-gradients'
 	}
 });

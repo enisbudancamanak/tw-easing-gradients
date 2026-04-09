@@ -35,7 +35,7 @@ Use in HTML:
 
 ## Source Code
 
-GitHub: https://github.com/enisbudancamanak/tw-easing-gradients
+GitHub: https://github.com/enisbu/tw-easing-gradients
 npm: https://www.npmjs.com/package/tw-easing-gradients
 
 ## License

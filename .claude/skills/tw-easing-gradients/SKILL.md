@@ -1,6 +1,6 @@
 ---
 name: tw-easing-gradients
-author: enisbudancamanak
+author: enisbu
 description: Replace Tailwind CSS linear gradients with smooth eased gradients using tw-easing-gradients. Use when upgrading bg-gradient-to-*, creating fading backgrounds, or smooth color transitions.
 ---
 

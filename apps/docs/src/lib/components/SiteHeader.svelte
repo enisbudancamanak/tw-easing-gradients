@@ -32,7 +32,7 @@
 				Playground
 			</a>
 			<a
-				href="https://github.com/enisbudancamanak/tw-easing-gradients"
+				href="https://github.com/enisbu/tw-easing-gradients"
 				target="_blank"
 				rel="noopener noreferrer"
 				class="text-muted-foreground hover:text-foreground p-2 transition-colors"

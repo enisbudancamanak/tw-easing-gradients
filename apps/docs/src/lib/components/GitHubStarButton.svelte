@@ -10,7 +10,7 @@
 	}
 
 	let {
-		repo = 'enisbudancamanak/tw-easing-gradients',
+		repo = 'enisbu/tw-easing-gradients',
 		stars = null,
 		class: className = ''
 	}: Props = $props();
